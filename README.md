@@ -21,9 +21,8 @@ Build Dependencies:
 
 > Clone the repo & use below commands
 
-``` sh
-
-git clone https://gitlab.com/gnukhata/build.git`
+```sh
+git clone https://gitlab.com/gnukhata/build.git
 
 cd build
 
