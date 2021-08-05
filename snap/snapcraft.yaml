@@ -1,0 +1,39 @@
+name: gnukhata
+base: core20 # the base snap is the execution environment for this snap
+version: "0.1" # just for humans, typically '1.2+git' or '1.3.2'
+summary: A free and open source accounting software
+description: |
+  Founded and Developed by Digital Freedom Foundation under the leadership of
+  Mr. Krishnakant Mane. Currently supported by Accion Labs Pvt. Ltd as a
+  social contribution to the free and open source software community.
+grade: devel # must be 'stable' to release into candidate/stable channels
+confinement: devmode # use 'strict' once you have the right plugs and slots
+
+apps:
+  gkcore:
+    command: bin/python3 setup.py
+
+parts:
+  # REST api server
+  gkcore:
+    plugin: python
+    source: https://gitlab.com/gnukhata/gkcore.git
+    source-tag: master
+    source-depth: 1
+    build-packages: [libpq-dev, postgresql]
+    stage-packages: [postgresql]
+    stage:
+      - -lib/python3.8/site-packages/webob
+
+  # Web app
+  gkwebapp:
+    plugin: python
+    source: https://gitlab.com/gnukhata/gkwebapp.git
+    source-tag: master
+    source-depth: 1
+    stage:
+      - -bin
+      - lib/python3.8/site-packages/webob
+      - lib/python3.8/site-packages/babel
+      - lib/python3.8/site-packages/pyramid_jinja2
+      - -pyvenv.cfg
