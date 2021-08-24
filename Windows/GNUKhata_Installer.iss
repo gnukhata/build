@@ -67,9 +67,13 @@ Source: "{#DataFolder}\gkwebapp\*"; DestDir: "{app}\gkwebapp"; Flags: ignorevers
 Source: "{#DataFolder}\gkcore\*"; DestDir: "{app}\gkcore"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 ; Dependencies
-Source: "{#DataFolder}\nginx\*"; DestDir: "{app}\nginx"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "{#DataFolder}\pgsql\*"; DestDir: "{app}\pgsql"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "{#DataFolder}\python\*"; DestDir: "{app}\python"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "{#DataFolder}\dependency\nginx\*"; DestDir: "{app}\nginx"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "{#DataFolder}\dependency\32bit\pgsql\*"; DestDir: "{app}\pgsql"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "{#DataFolder}\dependency\32bit\python-3.8.10.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#DataFolder}\dependency\32bit\vcredist_x86.exe"; DestDir: "{app}"; Flags: ignoreversion
+;Source: "{#DataFolder}\dependency\64bit\pgsql\*"; DestDir: "{app}\pgsql"; Flags: ignoreversion recursesubdirs createallsubdirs
+;Source: "{#DataFolder}\dependency\64bit\python-3.8.10-amd64.exe"; DestDir: "{app}"; Flags: ignoreversion
+;Source: "{#DataFolder}\dependency\64bit\vcredist_x64.exe"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
@@ -80,17 +84,20 @@ Name: "{commonprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; IconFi
 Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; WorkingDir: "{app}"; IconFilename: "{app}\{#MyAppIcoName}"
 
 [Run]
-Filename: "{app}\database.bat"; Flags: runhidden 
+Filename: "{app}\vcredist_x86.exe"; Parameters: "/install /passive /norestart";
+Filename: "{app}\python-3.8.10.exe"; Parameters: "/passive InstallAllUsers=1 TargetDir={app}\python";
+Filename: "{app}\init_database.bat"; Flags: runhidden
 Filename: "{app}\init_gkcore.bat"; Flags: runhidden 
 Filename: "{app}\init_gkwebapp.bat"; Flags: runhidden 
 Filename: "{app}\init_gnukhata.bat"; Flags: runhidden 
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: shellexec postinstall waituntilidle runhidden
 
 [UninstallRun]
+Filename: "{app}\python-3.8.10.exe"; Parameters: "/uninstall /passive"; RunOnceId: "GNUKhata_Python_Uninstall";
 Filename: "{app}\on_remove.bat"; RunOnceId: "GNUKhata_Uninstall";
 
 [Registry]
-Root: HKLM; Subkey: "Software\Microsoft\Windows\CurrentVersion\Run"; ValueType: string; ValueName: "GNUKhata"; ValueData: "{app}\init_gnukhata.vbs"
+Root: HKLM; Subkey: "Software\Microsoft\Windows\CurrentVersion\Run"; ValueType: string; ValueName: "GNUKhata"; ValueData: "{app}\init_gnukhata.vbs";  Flags: deletekey uninsdeletekey
 ; Register Nginx and GNUkhata server startup scripts to start on system startup
 
 
