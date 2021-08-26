@@ -68,12 +68,16 @@ Source: "{#DataFolder}\gkcore\*"; DestDir: "{app}\gkcore"; Flags: ignoreversion 
 
 ; Dependencies
 Source: "{#DataFolder}\dependency\nginx\*"; DestDir: "{app}\nginx"; Flags: ignoreversion recursesubdirs createallsubdirs
+; --- 32bit ---
 Source: "{#DataFolder}\dependency\32bit\pgsql\*"; DestDir: "{app}\pgsql"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "{#DataFolder}\dependency\32bit\python-3.8.10.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#DataFolder}\dependency\32bit\vcredist_x86.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#DataFolder}\dependency\32bit\pip_dependencies\*"; DestDir: "{app}\pip_dependencies"; Flags: ignoreversion recursesubdirs createallsubdirs
+; --- 64bit ---
 ;Source: "{#DataFolder}\dependency\64bit\pgsql\*"; DestDir: "{app}\pgsql"; Flags: ignoreversion recursesubdirs createallsubdirs
 ;Source: "{#DataFolder}\dependency\64bit\python-3.8.10-amd64.exe"; DestDir: "{app}"; Flags: ignoreversion
 ;Source: "{#DataFolder}\dependency\64bit\vcredist_x64.exe"; DestDir: "{app}"; Flags: ignoreversion
+;Source: "{#DataFolder}\dependency\64bit\pip_dependencies\*"; DestDir: "{app}\pip_dependencies"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
@@ -84,8 +88,13 @@ Name: "{commonprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; IconFi
 Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; WorkingDir: "{app}"; IconFilename: "{app}\{#MyAppIcoName}"
 
 [Run]
+; --- 32bit ---
 Filename: "{app}\vcredist_x86.exe"; Parameters: "/install /passive /norestart";
 Filename: "{app}\python-3.8.10.exe"; Parameters: "/passive InstallAllUsers=1 TargetDir={app}\python";
+; --- 64bit ---
+Filename: "{app}\vcredist_x64.exe"; Parameters: "/install /passive /norestart";
+Filename: "{app}\python-3.8.10-amd64.exe"; Parameters: "/passive InstallAllUsers=1 TargetDir={app}\python";
+; ---
 Filename: "{app}\init_database.bat"; Flags: runhidden
 Filename: "{app}\init_gkcore.bat"; Flags: runhidden 
 Filename: "{app}\init_gkwebapp.bat"; Flags: runhidden 
@@ -93,7 +102,11 @@ Filename: "{app}\init_gnukhata.bat"; Flags: runhidden
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: shellexec postinstall waituntilidle runhidden
 
 [UninstallRun]
+; --- 32bit ---
 Filename: "{app}\python-3.8.10.exe"; Parameters: "/uninstall /passive"; RunOnceId: "GNUKhata_Python_Uninstall";
+; --- 64bit ---
+Filename: "{app}\python-3.8.10-amd64.exe"; Parameters: "/uninstall /passive"; RunOnceId: "GNUKhata_Python_Uninstall";
+; ---
 Filename: "{app}\on_remove.bat"; RunOnceId: "GNUKhata_Uninstall";
 
 [Registry]
