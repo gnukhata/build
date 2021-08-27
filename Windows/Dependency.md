@@ -15,7 +15,7 @@
 	7. supervisor == 4.2.1
 	8. natsort == 7.1.0
 	9. waitress == 1.4.4
-	10. #	gunicorn==20.1.0 (not required for windows)
+	10. gunicorn==20.1.0 (not required for windows)
 	11. pillow == 8.0.1
 	12. requests == 2.25.0
 	13. wsgicors == 0.7.0
@@ -26,7 +26,7 @@
 	3. pyramid_jinja2 == 2.8
 	4. WebOb == 1.8.6
 	5. waitress == 1.4.4
-	6. #    gunicorn == 20.1.0 (not required for windows)
+	6. gunicorn == 20.1.0 (not required for windows)
 	7. wsgicors == 0.7.0
 	8. requests == 2.25.0
 	9. Pillow == 8.0.1
