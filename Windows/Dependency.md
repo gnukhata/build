@@ -37,7 +37,7 @@
 1. Except nginx and part of the pip_dependencies, all the other dependencies require separate
 installer or code package depending upon the CPU architecture (32bit and 64bit). Download the
 packages for the required architecture and use them accordingly while creating the installer.
-2. The folder structure that has been used is present in the README.md file, please use it as a referrence
+2. The [folder structure](https://gitlab.com/gnukhata/build/-/blob/master/Windows/README.md#folder-structure) that has been used is present in the README.md file, please use it as a referrence
 to structure your setup.
 3. At the time of writing this file,
 	* Gunicorn doesn't work on windows and hence we are using waitress
