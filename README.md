@@ -36,4 +36,17 @@ To stop the container, run `docker-compose down`
 
 **NOTE:** gnukhata's data is stored to `gkdir` folder in user's home directory
 
-## Windows [TODO]
+## Windows
+
+There are several options to create an installer file for windows. Here we have used the software
+called Innosetup for that purpose. 
+
+Use the following steps to create a GNUKhata installer for windows,
+1. Clone the [build](https://gitlab.com/gnukhata/build) repo to your windows system.
+2. Clone the [gkcore](https://gitlab.com/gnukhata/gkcore) and [gkwebapp](https://gitlab.com/gnukhata/gkwebapp) repos to your system and checkout to the desired branches with the latest code.
+3. Download all the dependencies listed in Dependency.md file.
+4. Download and install Innosetup.
+5. Open Innosetup and load the file [GNUKhata_Installer.iss](https://gitlab.com/gnukhata/build/-/blob/master/Windows/GNUKhata_Installer.iss).
+6. Update the dependency paths in GNUKhata_installer.iss file to suit your folder structure.
+7. Comment out and uncomment the lines in GNUKhata_installer.iss file based on the CPU architecture you are building for.
+7. Press on the compile button at the top of Innosetup software to create the installer file.

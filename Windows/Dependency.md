@@ -1,5 +1,4 @@
 # GNUKhata Dependencies
-=======================
 * Common Dependencies
 	1. Python 3.8
 	2. PostgresQL 9.6
