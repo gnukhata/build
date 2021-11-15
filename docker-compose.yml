@@ -32,7 +32,7 @@ services:
     image: razorpay/ifsc:latest
     restart: on-failure
     ports:
-      - "3000:3000"
+      - "127.0.0.1:6545:3000"
 
   # http server
   # web:
