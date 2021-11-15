@@ -15,7 +15,7 @@ services:
       - POSTGRES_PASSWORD=gkadmin
       - POSTGRES_DB=gkdata
     volumes:
-      - $HOME/gkdata/postgresql:/var/lib/postgresql/data
+      - $HOME/gkdir/postgresql:/var/lib/postgresql/data
 
   # gnukhata (gkcore & gkwebapp)
   gnukhata:
