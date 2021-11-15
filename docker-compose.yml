@@ -20,7 +20,7 @@ services:
   # gnukhata (gkcore & gkwebapp)
   gnukhata:
     #build: docker-compose/
-    image: digitalfreedom/gnukhata:master
+    image: digitalfreedom/gnukhata:devel
     restart: on-failure
     ports:
       - "6543:6543" #gkcore
