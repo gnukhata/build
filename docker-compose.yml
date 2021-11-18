@@ -31,8 +31,6 @@ services:
   ifsc-server:
     image: razorpay/ifsc:latest
     restart: on-failure
-    ports:
-      - "127.0.0.1:6545:3000"
 
   # http server
   # web:
