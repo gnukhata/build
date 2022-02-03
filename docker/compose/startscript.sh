@@ -1,9 +1,9 @@
 #!/bin/bash
 
-# delete virtualenv & recreate a fresh one
-rm -rf gkenv
-python3 -m venv gkenv
-. gkenv/bin/activate
+# # delete virtualenv & recreate a fresh one
+# rm -rf gkenv
+# python3 -m venv gkenv
+# . gkenv/bin/activate
 
 #gkcore
 cd /gnukhata/gkcore
@@ -13,6 +13,7 @@ echo "checking database status"
 python3 initdb.py
 
 echo "checking pip dependencies"
+pip3 install -r requirements.txt
 python3 setup.py develop
 
 #gkwebapp
@@ -21,6 +22,7 @@ echo "pulling latest gkwebapp changes ..."
 git pull
 
 echo "checking pip dependencies"
+pip3 install -r requirements.txt
 python3 setup.py develop
 
 # supervisor

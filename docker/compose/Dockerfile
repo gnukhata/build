@@ -22,7 +22,7 @@ WORKDIR /gnukhata
 RUN chmod 755 startscript.sh supervisord.conf
 
 # create a virtual env & switch to it
-RUN python3 -m venv gkenv && . gkenv/bin/activate
+# RUN python3 -m venv gkenv && . gkenv/bin/activate
 
 # Download the respositories from their master branch
 RUN git clone -b $branch --depth 1 https://gitlab.com/gnukhata/gkcore.git
