@@ -1,6 +1,6 @@
 # Gnukhata docker compose file
 # Maintainers: Sai Karthik <kskarthik@disroot.org>
-# Persistent data location is your gkdir folder in user's home directory
+# Persistent data location is 'gkdir' folder in user's home directory
 # postgres data: gkdir/postgresql
 # caddy config: gkdir/caddy
 

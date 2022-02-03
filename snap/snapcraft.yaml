@@ -10,8 +10,8 @@ grade: devel # must be 'stable' to release into candidate/stable channels
 confinement: devmode # use 'strict' once you have the right plugs and slots
 
 apps:
-  gkcore:
-    command: bin/python3 setup.py
+  setup:
+    command: bin/gkutil.sh
 
 parts:
   # REST api server
@@ -20,8 +20,11 @@ parts:
     source: https://gitlab.com/gnukhata/gkcore.git
     source-tag: master
     source-depth: 1
-    build-packages: [libpq-dev, postgresql]
-    stage-packages: [postgresql]
+    build-packages: [libpq-dev]
+    stage-packages:
+      - postgresql
+      - bash
+
     stage:
       - -lib/python3.8/site-packages/webob
 
@@ -32,8 +35,17 @@ parts:
     source-tag: master
     source-depth: 1
     stage:
-      - -bin
+      - lib/python3.8/site-packages/gkwebapp
       - lib/python3.8/site-packages/webob
       - lib/python3.8/site-packages/babel
       - lib/python3.8/site-packages/pyramid_jinja2
       - -pyvenv.cfg
+
+  # copy config files
+  config:
+    plugin: dump
+    source: snapconf/
+    organize:
+      "gkcore-production.ini": lib/python3.8/site-packages/gkcore/
+      "gkwebapp-production.ini": lib/python3.8/site-packages/gkwebapp/
+      "gkutil.sh": bin/
