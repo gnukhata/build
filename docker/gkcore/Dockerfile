@@ -1,4 +1,4 @@
-FROM python:3.8.12-buster
+FROM python:3.8-buster
 
 MAINTAINER Sai Karthik <kskarthik@disroot.org>
 
@@ -26,23 +26,23 @@ RUN chmod 755 startscript.sh supervisord.conf
 
 # Download the respositories from their master branch
 RUN git clone -b $branch --depth 1 https://gitlab.com/gnukhata/gkcore.git
-RUN git clone -b $branch --depth 1 https://gitlab.com/gnukhata/gkwebapp.git
+# RUN git clone -b $branch --depth 1 https://gitlab.com/gnukhata/gkwebapp.git
 
 WORKDIR /gnukhata/gkcore
 
 # install gkcore dependencies
-RUN python3 setup.py develop
+RUN pip3 install -r requirements.txt && python3 setup.py develop
 
-WORKDIR /gnukhata/gkwebapp
-
-# install gkwebapp dependencies
-RUN python3 setup.py develop
+# WORKDIR /gnukhata/gkwebapp
+#
+# # install gkwebapp dependencies
+# RUN pip3 install -r requirements.txt && python3 setup.py develop
 
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 WORKDIR /gnukhata
 # expose gkwebapp, gkcore ports
 EXPOSE 6543
-EXPOSE 6544
+# EXPOSE 6544
 
 ENTRYPOINT /gnukhata/startscript.sh

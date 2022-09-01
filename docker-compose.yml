@@ -16,6 +16,12 @@ services:
       - POSTGRES_DB=gkdata
     volumes:
       - $HOME/gkdir/postgresql:/var/lib/postgresql/data
+      - $HOME/gkdir/logs:/gnukhata/*.log
+
+  # IFSC codes validation API server
+  ifsc-server:
+    image: razorpay/ifsc:latest
+    restart: on-failure
 
   # gnukhata (gkcore & gkwebapp)
   gnukhata:
@@ -28,11 +34,16 @@ services:
     depends_on:
       - db
       - ifsc-server
-  # IFSC codes validation API server
-  ifsc-server:
-    image: razorpay/ifsc:latest
-    restart: on-failure
 
+  # gnukhata's progressive web app
+  gkapp:
+    image: digitalfreedom/gkapp:latest
+    restart: on-failure
+    ports:
+      - "80:80"
+    depends_on:
+      - gnukhata
+      - ifsc-server
   # http server
   # web:
   #   image: caddy:alpine
