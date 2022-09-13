@@ -23,9 +23,19 @@ services:
     image: razorpay/ifsc:latest
     restart: on-failure
 
-  # gnukhata (gkcore & gkwebapp)
+  # REST API Server
+  gkcore:
+    # image: digitalfreedom/gnukhata:devel
+    image: gkcore:latest
+    restart: on-failure
+    ports:
+      - "6543:6543" #gkcore
+    depends_on:
+      - db
+      - ifsc-server
+
+  # REST API Server
   gnukhata:
-    #build: docker-compose/
     image: digitalfreedom/gnukhata:devel
     restart: on-failure
     ports:
@@ -34,7 +44,6 @@ services:
     depends_on:
       - db
       - ifsc-server
-
   # gnukhata's progressive web app
   gkapp:
     image: digitalfreedom/gkapp:latest
@@ -42,7 +51,7 @@ services:
     ports:
       - "80:80"
     depends_on:
-      - gnukhata
+      - gkcore
       - ifsc-server
   # http server
   # web:

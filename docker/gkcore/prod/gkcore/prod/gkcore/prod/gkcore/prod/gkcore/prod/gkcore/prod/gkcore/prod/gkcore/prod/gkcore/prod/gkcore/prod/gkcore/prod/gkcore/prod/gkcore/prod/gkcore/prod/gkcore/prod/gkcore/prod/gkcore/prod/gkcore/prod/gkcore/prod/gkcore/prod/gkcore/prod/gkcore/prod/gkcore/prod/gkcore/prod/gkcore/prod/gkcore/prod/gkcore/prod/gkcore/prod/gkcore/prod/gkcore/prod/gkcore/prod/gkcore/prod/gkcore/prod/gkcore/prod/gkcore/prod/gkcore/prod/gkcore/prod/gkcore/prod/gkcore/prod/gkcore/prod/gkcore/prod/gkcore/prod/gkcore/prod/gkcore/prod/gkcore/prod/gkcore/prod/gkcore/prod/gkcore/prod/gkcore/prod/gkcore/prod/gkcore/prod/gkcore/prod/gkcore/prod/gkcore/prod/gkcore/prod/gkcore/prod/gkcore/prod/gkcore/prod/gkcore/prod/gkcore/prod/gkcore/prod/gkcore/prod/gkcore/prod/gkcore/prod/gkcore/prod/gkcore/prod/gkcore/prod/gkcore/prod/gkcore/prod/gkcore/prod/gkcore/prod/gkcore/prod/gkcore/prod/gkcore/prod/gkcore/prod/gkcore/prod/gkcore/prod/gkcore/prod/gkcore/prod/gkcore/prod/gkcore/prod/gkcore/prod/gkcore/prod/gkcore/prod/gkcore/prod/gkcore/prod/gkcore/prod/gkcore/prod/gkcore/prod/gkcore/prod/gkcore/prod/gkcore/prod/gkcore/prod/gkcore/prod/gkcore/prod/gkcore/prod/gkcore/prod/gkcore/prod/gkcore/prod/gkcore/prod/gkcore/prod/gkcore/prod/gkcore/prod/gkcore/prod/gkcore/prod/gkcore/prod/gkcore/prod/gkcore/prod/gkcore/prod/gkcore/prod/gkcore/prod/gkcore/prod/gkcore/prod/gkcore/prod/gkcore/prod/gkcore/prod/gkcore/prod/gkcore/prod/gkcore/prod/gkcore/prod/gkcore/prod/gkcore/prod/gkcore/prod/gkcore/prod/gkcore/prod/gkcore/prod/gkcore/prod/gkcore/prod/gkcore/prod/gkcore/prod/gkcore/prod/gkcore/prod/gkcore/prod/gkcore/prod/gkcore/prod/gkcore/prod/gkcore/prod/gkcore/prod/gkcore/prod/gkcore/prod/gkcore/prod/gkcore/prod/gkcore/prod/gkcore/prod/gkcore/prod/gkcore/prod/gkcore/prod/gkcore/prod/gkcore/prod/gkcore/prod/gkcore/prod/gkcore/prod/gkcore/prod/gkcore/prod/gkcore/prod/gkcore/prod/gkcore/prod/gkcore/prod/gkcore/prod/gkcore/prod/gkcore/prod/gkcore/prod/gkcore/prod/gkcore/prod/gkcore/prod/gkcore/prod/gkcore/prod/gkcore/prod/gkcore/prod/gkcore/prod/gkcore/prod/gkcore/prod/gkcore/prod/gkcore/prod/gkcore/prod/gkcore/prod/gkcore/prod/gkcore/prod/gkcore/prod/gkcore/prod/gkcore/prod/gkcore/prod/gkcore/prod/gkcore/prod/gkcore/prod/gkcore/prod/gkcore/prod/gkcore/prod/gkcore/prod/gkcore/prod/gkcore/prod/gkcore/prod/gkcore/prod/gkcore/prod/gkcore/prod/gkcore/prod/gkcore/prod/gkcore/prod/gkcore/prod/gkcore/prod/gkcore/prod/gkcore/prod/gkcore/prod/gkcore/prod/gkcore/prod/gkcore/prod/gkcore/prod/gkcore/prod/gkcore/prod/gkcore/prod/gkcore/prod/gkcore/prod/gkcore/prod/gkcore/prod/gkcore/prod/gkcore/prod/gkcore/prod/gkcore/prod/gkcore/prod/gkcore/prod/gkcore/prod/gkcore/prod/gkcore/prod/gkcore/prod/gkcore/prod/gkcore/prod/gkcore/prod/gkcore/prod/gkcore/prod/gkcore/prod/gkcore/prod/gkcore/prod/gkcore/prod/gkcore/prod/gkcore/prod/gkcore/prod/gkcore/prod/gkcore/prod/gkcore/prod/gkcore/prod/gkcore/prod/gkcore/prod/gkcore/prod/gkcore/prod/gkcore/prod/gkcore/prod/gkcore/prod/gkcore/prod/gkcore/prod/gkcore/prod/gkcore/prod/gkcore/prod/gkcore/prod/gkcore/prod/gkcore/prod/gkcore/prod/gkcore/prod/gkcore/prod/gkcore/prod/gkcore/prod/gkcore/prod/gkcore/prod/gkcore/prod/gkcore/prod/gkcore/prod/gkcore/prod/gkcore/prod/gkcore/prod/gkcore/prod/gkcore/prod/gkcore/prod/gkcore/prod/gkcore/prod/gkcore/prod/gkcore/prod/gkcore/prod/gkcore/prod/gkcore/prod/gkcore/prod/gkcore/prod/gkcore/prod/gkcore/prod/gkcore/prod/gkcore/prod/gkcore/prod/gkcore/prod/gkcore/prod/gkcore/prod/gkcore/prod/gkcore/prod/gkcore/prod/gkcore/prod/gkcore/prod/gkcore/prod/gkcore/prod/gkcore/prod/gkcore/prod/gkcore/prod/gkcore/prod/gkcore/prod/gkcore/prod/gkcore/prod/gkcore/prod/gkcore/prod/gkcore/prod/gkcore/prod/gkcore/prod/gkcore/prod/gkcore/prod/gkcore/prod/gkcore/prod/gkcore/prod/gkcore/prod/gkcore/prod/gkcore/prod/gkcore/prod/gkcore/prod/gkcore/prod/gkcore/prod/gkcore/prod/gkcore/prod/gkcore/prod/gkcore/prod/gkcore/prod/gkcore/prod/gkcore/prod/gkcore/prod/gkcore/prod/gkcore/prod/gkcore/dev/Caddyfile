@@ -1,0 +1,20 @@
+(cors) {
+	@origin header Origin {args.0}
+	header @origin Access-Control-Allow-Origin "{args.0}"
+	header @origin Access-Control-Request-Method GET
+}
+
+{$SITE_ADDRESS} {
+
+import cors {$SITE_ADDRESS}
+
+# gkwebapp
+reverse_proxy * gnukhata:6544
+
+# gkcore
+handle_path /api/* {
+	rewrite /api /api/
+	reverse_proxy gnukhata:6543
+    }
+}
+
