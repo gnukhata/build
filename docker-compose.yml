@@ -1,8 +1,7 @@
 # Gnukhata docker compose file
 # Maintainers: Sai Karthik <kskarthik@disroot.org>
 # Persistent data location is 'gkdir' folder in user's home directory
-# postgres data: gkdir/postgresql
-# caddy config: gkdir/caddy
+# postgres data: ~/gkdir/postgresql
 
 version: "3.3" # optional since v1.27.0
 services:
@@ -23,54 +22,26 @@ services:
     image: razorpay/ifsc:latest
     restart: on-failure
 
-  # REST API Server
+  # GNUKhata REST API Server
   gkcore:
-    # image: digitalfreedom/gnukhata:devel
-    image: gkcore:latest
+    image: digitalfreedom/gkcore:v8.0a
     restart: on-failure
+    environment:
+      - GKCORE_DB_URL=postgres://gkadmin:gkadmin@db:5432/gkdata
     ports:
-      - "6543:6543" #gkcore
+      - "6543:6543" #expose gkcore port to host
     depends_on:
       - db
       - ifsc-server
 
-  # REST API Server
-  gnukhata:
-    image: digitalfreedom/gnukhata:devel
-    restart: on-failure
-    ports:
-      - "6543:6543" #gkcore
-      - "6544:6544" #gkwebapp
-    depends_on:
-      - db
-      - ifsc-server
-  # gnukhata's progressive web app
+  # GNUKhata progressive web app
   gkapp:
-    image: digitalfreedom/gkapp:latest
+    image: digitalfreedom/gkapp:v8.0a
     restart: on-failure
     ports:
-      - "80:80"
+      - "2020:80"
     depends_on:
       - gkcore
       - ifsc-server
-  # http server
-  # web:
-  #   image: caddy:alpine
-  #   volumes:
-  #     # Caddy config file
-  #     - $HOME/Caddyfile:/etc/caddy/Caddyfile
-  #     # The /data directory must not be treated as a cache. Its contents are not ephemeral or merely for the sake of performance. Caddy stores
-  #     # TLS certificates, private keys, OCSP staples, and other necessary information to the data directory. It should not be purged without
-  #     # an understanding of the implications.
-  #     - $HOME/gkdir/caddy/data:/data
-  #     # config directory
-  #     - $HOME/gkdir/caddy/config:/config
-  #   environment:
-  #     # caddy automatically adds a lets encrypt SSL certificate to a valid domain name prefixed with https://
-  #     # and issues a self signed certificate if run from localhost with https://
-  #     - SITE_ADDRESS=localhost
-  #   ports:
-  #     - "80:80"
-  #     - "443:443" # for SSL
-  #   depends_on:
-  #     - gnukhata
+    # volumes:
+    #   - $HOME/gkdir/gkapp:/usr/share/nginx/
