@@ -1,5 +1,6 @@
 {
   "gkcore_url": "https://api.gnukhata.org",
+  "fetch_latest_version": true,
   "login_banner": {
     "show": true,
     "variant": "info",
