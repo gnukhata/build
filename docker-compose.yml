@@ -24,7 +24,7 @@ services:
 
   # GNUKhata REST API Server
   gkcore:
-    image: digitalfreedom/gkcore:v8.0a
+    image: digitalfreedom/gkcore:latest
     restart: on-failure
     environment:
       - GKCORE_DB_URL=postgres://gkadmin:gkadmin@db:5432/gkdata
@@ -36,7 +36,7 @@ services:
 
   # GNUKhata progressive web app
   gkapp:
-    image: digitalfreedom/gkapp:v8.0a
+    image: digitalfreedom/gkapp:latest
     restart: on-failure
     ports:
       - "2020:80"
