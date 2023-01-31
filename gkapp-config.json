@@ -1,8 +1,8 @@
 {
-  "gkcore_url": "https://api.gnukhata.org",
+  "gkcore_url": "https://api-dev.gnukhata.org",
   "fetch_latest_version": true,
   "login_banner": {
-    "show": true,
+    "show": false,
     "variant": "info",
     "content": "Demo Username: WM_admin / Password: admin"
   },
