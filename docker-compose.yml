@@ -1,7 +1,5 @@
 # Gnukhata docker compose file
 # Maintainers: Sai Karthik <kskarthik@disroot.org>
-# Persistent data location is 'gkdir' folder in user's home directory
-# postgres data: ~/gkdir/postgresql
 
 version: "3.3" # optional since v1.27.0
 services:
@@ -14,8 +12,7 @@ services:
       - POSTGRES_PASSWORD=gkadmin
       - POSTGRES_DB=gkdata
     volumes:
-      - $HOME/gkdir/postgresql:/var/lib/postgresql/data
-      - $HOME/gkdir/logs:/gnukhata/*.log
+      - gkdb:/var/lib/postgresql/data
 
   # IFSC codes validation API server
   ifsc-server:
@@ -43,3 +40,5 @@ services:
     depends_on:
       - gkcore
       - ifsc-server
+volumes:
+  gkdb:
