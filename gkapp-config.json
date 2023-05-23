@@ -3,9 +3,9 @@
   "fetch_latest_version": true,
 	"disable_captcha": true,
   "login_banner": {
-    "show": false,
-    "variant": "info",
-    "content": "Demo Username: WM_admin / Password: admin"
+    "show": true,
+    "variant": "warning",
+    "content": "⚠️" Disclaimer: The data on this server might reset periodically"
   },
   "sidebar_banner": {
     "show": false,
