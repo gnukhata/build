@@ -5,7 +5,7 @@
   "login_banner": {
     "show": true,
     "variant": "warning",
-    "content": "⚠️" Disclaimer: The data on this server might reset periodically"
+    "content": "⚠️  Disclaimer: The data on this server might reset periodically"
   },
   "sidebar_banner": {
     "show": false,
