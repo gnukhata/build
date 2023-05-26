@@ -1,7 +1,7 @@
 {
   "gkcore_url": "https://api-dev.gnukhata.org",
   "fetch_latest_version": true,
-	"disable_captcha": true,
+	"login_captcha": false,
   "login_banner": {
     "show": true,
     "variant": "warning",
