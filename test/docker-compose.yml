@@ -19,9 +19,9 @@ services:
       - gkdb:/var/lib/postgresql/data
 
   # IFSC codes validation API server
-  ifsc-server:
-    image: razorpay/ifsc:latest
-    restart: "always"
+  # ifsc-server:
+  #   image: razorpay/ifsc:latest
+  #   restart: "always"
 
   # REST API Server
   gkcore:
