@@ -33,6 +33,6 @@ services:
       - "6543:6543" #gkcore
     depends_on:
       - db
-      - ifsc-server
+
 volumes:
   gkdb:
