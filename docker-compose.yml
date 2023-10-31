@@ -14,11 +14,6 @@ services:
     volumes:
       - gkdb:/var/lib/postgresql/data
 
-  # IFSC codes validation API server
-  ifsc-server:
-    image: razorpay/ifsc:latest
-    restart: "always"
-
   # GNUKhata REST API Server
   gkcore:
     image: digitalfreedom/gkcore:latest
@@ -29,7 +24,6 @@ services:
       - "6543:6543" #expose gkcore port to host
     depends_on:
       - db
-      - ifsc-server
 
   # GNUKhata progressive web app
   gkapp:
