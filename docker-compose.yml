@@ -33,6 +33,5 @@ services:
       - "2020:80"
     depends_on:
       - gkcore
-      - ifsc-server
 volumes:
   gkdb:
