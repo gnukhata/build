@@ -1,0 +1,21 @@
+# gkwebapp
+localhost {
+	reverse_proxy * gkwebapp:6544
+}
+
+https://api-dev.gnukhata.org {
+        reverse_proxy gkcore:6543
+}
+
+https://try.gnukhata.org {
+        root * /home/ubuntu/gkapp/dist
+        file_server
+}
+
+http://gkwebapp.gnukhata.org {
+        reverse_proxy localhost:6544
+}
+
+https://hooks.gnukhata.org {
+        reverse_proxy localhost:9000
+}

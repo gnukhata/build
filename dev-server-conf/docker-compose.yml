@@ -1,12 +1,18 @@
 # Gnukhata docker compose file
 # This file is used on the dev server
 # Maintainers: Sai Karthik <kskarthik@disroot.org>
-# Persistent data location is 'gkdir' folder in user's home directory
-# postgres data: gkdir/postgresql
-# caddy config: gkdir/caddy
 
 version: "2.2" # optional since v1.27.0
 services:
+  caddy:
+    image: caddy:alpine
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+
   # postgresql database
   db:
     image: postgres:12-alpine
@@ -18,21 +24,21 @@ services:
     volumes:
       - gkdb:/var/lib/postgresql/data
 
-  # IFSC codes validation API server
-  # ifsc-server:
-  #   image: razorpay/ifsc:latest
-  #   restart: "always"
-
   # REST API Server
   gkcore:
     image: digitalfreedom/gkcore:devel
     restart: "always"
     environment:
       - GKCORE_DB_URL=postgres://gkadmin:gkadmin@db:5432/gkdata
-    ports:
-      - "6543:6543" #gkcore
     depends_on:
       - db
 
+  # gnukhata v7
+  gkwebapp:
+    restart: "always"
+    image: digitalfreedom/gnukhata:v7.0update
+    volumes:
+      - gkdb_old:/var/lib/postgresql
 volumes:
   gkdb:
+  gkdb_old:
