@@ -30,6 +30,7 @@ services:
     restart: "always"
     environment:
       - GKCORE_DB_URL=postgres://gkadmin:gkadmin@db:5432/gkdata
+      - DEBUG=${DEBUG:-true}
     depends_on:
       - db
 
