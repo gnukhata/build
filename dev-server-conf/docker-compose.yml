@@ -30,7 +30,7 @@ services:
     restart: "always"
     environment:
       - GKCORE_DB_URL=postgres://gkadmin:gkadmin@db:5432/gkdata
-      - DEBUG=${DEBUG:-true}
+      - PYRAMID_CONFIG_FILE=${PYRAMID_CONFIG_FILE}
     depends_on:
       - db
 
