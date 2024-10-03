@@ -1,7 +1,6 @@
 # Gnukhata docker compose file
 # Maintainers: Sai Karthik <kskarthik@disroot.org>
 
-version: "3.3" # optional since v1.27.0
 services:
   # postgresql database
   db:
