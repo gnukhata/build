@@ -21,6 +21,8 @@ services:
     environment:
       - GKCORE_DB_URL=postgres://gkadmin:gkadmin@db:5432/gkdata
       - PYRAMID_CONFIG_FILE=${PYRAMID_CONFIG_FILE}
+    ports:
+      - "6543:6543" #gkcore
     depends_on:
       - db
 
@@ -28,8 +30,11 @@ services:
   gkwebapp:
     restart: "always"
     image: digitalfreedom/gnukhata:v7.0update
+    ports:
+      - "6544:6544"
     volumes:
       - gkdb_old:/var/lib/postgresql
+
 volumes:
   gkdb:
   gkdb_old:
