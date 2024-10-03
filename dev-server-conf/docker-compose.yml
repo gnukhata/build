@@ -2,7 +2,6 @@
 # This file is used on the dev server
 # Maintainers: Sai Karthik <kskarthik@disroot.org>
 
-version: "2.2" # optional since v1.27.0
 services:
   caddy:
     image: caddy:alpine
