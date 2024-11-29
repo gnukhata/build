@@ -21,7 +21,8 @@ services:
     image: digitalfreedom/gkcore:devel
     restart: "always"
     env_file:
-      - .env
+      - path: .env
+        required: false
     environment:
       - GKCORE_DB_HOST=db
       - GKCORE_DB_PORT=5432
