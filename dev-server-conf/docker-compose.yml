@@ -20,10 +20,12 @@ services:
   gkcore:
     image: digitalfreedom/gkcore:devel
     restart: "always"
+    env_file:
+      - .env
     environment:
       - GKCORE_DB_HOST=db
       - GKCORE_DB_PORT=5432
-      - PYRAMID_CONFIG_FILE=${PYRAMID_CONFIG_FILE:-production.ini}
+      - ENVIRONMENT=development
     ports:
       - "6543:6543" #gkcore
     depends_on:
