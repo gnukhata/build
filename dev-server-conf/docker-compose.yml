@@ -15,6 +15,11 @@ services:
       - "${DB_HOST_PORT:-5432}:5432"
     volumes:
       - gkdb:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "sh -c 'pg_isready -U ${GKCORE_DB_USER:-gkadmin} -d ${GKCORE_DB_NAME:-gkdata}'"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
 
   # REST API Server
   gkcore:
@@ -27,7 +32,8 @@ services:
     ports:
       - "6543:6543" #gkcore
     depends_on:
-      - db
+      db:
+        condition: service_healthy
 
   # gnukhata v7
   gkwebapp:
