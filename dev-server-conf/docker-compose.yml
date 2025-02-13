@@ -28,7 +28,7 @@ services:
     environment:
       - GKCORE_DB_HOST=db
       - GKCORE_DB_PORT=5432
-      - ENVIRONMENT=development
+      - ENVIRONMENT=${ENVIRONMENT:-development}
     ports:
       - "6543:6543" #gkcore
     depends_on:
