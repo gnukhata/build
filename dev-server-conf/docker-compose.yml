@@ -43,6 +43,7 @@ services:
       - "6544:6544"
     volumes:
       - gkdb_old:/var/lib/postgresql
+    profiles: [frontend-old]
 
 volumes:
   gkdb:

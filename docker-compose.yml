@@ -41,5 +41,7 @@ services:
       - "2020:80"
     depends_on:
       - gkcore
+    profiles: [frontend]
+
 volumes:
   gkdb:
