@@ -35,6 +35,16 @@ services:
       db:
         condition: service_healthy
 
+  # GNUKhata progressive web app
+  gkapp:
+    image: digitalfreedom/gkapp:devel
+    restart: "always"
+    ports:
+      - "2020:80"
+    depends_on:
+      - gkcore
+    profiles: [frontend]
+
   # gnukhata v7
   gkwebapp:
     restart: "always"
