@@ -22,7 +22,7 @@ services:
 
   # GNUKhata REST API Server
   gkcore:
-    image: digitalfreedom/gkcore:latest
+    image: ${GKCORE_IMAGE:-digitalfreedom/gkcore:latest}
     restart: "always"
     environment:
       - GKCORE_DB_HOST=db
@@ -36,7 +36,7 @@ services:
 
   # GNUKhata progressive web app
   gkapp:
-    image: digitalfreedom/gkapp:latest
+    image: ${GKAPP_IMAGE:-digitalfreedom/gkapp:latest}
     restart: "always"
     ports:
       - "2020:80"
