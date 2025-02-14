@@ -3,22 +3,20 @@
 set -e  # Exit on error
 set -u  # Treat unset variables as an error
 
+
+# Ensure desktop file directory exists
 COMPOSE_URL="https://gitlab.com/gnukhata/build/-/raw/6a817be1991d141347bc1443b23aadf50d1cf5f8/docker-compose.yml"
-PROJECT_DIR="gnukhata"
-ENV_FILE=${1:-}
+DESKTOP_DIR="$HOME/.local/share/applications"
+PROJECT_DIR="$HOME/.local/share/gnukhata"
+CONF_DIR="$HOME/.config/gnukhata"
+CONF_FILE=${1:-}
 
 # To cleanup on error
 cleanup() {
     echo "Cleaning up..."
     cd ..
-    rm -rf "$PROJECT_DIR"
+    rm -rf "$PROJECT_DIR" "$CONF_DIR"
 }
-
-# Check if project directory already exists
-if [ -d "$PROJECT_DIR" ]; then
-    echo "Error: Project directory '$PROJECT_DIR' already exists. Exiting."
-    exit 1
-fi
 
 trap cleanup EXIT
 
@@ -30,6 +28,11 @@ fi
 
 # Create project directory
 mkdir -p "$PROJECT_DIR"
+
+if [ -f "$CONF_FILE" ]; then
+    mkdir -p "$CONF_DIR"
+    cp "$CONF_FILE" "$CONF_DIR/env"
+fi
 
 # Download docker-compose file with retry mechanism
 COMPOSE_FILE="$PROJECT_DIR/docker-compose.yml"
@@ -50,35 +53,32 @@ if [ ! -s "$COMPOSE_FILE" ]; then
     exit 1
 fi
 
-# Change to project directory
-cd "$PROJECT_DIR"
+# Save docker compose function as an executable script
+RUN_SCRIPT="$PROJECT_DIR/run_docker_compose.sh"
+echo "#!/bin/sh" > "$RUN_SCRIPT"
+echo "cd $PROJECT_DIR" >> "$RUN_SCRIPT"
+echo "if [ -f \"$CONF_DIR/env\" ]; then" >> "$RUN_SCRIPT"
+echo "  docker-compose --profile frontend --env-file \"$CONF_DIR/env\" up -d" >> "$RUN_SCRIPT"
+echo "else" >> "$RUN_SCRIPT"
+echo "  docker-compose --profile frontend up -d" >> "$RUN_SCRIPT"
+echo "fi" >> "$RUN_SCRIPT"
+chmod +x "$RUN_SCRIPT"
 
-echo "$ENV_FILE"
-
-# Run docker compose
-if [ -n "$ENV_FILE" ] && [ -f "$ENV_FILE" ]; then
-    sudo docker-compose --profile frontend --env-file "$ENV_FILE" up -d
-else
-    sudo docker-compose --profile frontend up -d
-fi
+sh "./$RUN_SCRIPT"
 
 # Disable cleanup on successful execution
 trap - EXIT
 
 echo "Docker Compose setup completed successfully."
 
-# Ensure desktop file directory exists
-DESKTOP_DIR="$HOME/.local/share/applications"
-mkdir -p "$DESKTOP_DIR"
-
 # Create a desktop entry for launching the setup
 DESKTOP_FILE="$DESKTOP_DIR/project-setup.desktop"
 echo "[Desktop Entry]" > "$DESKTOP_FILE"
 echo "Type=Application" >> "$DESKTOP_FILE"
 echo "Terminal=true" >> "$DESKTOP_FILE"
-echo "Exec=sh -c 'cd $PROJECT_DIR && docker compose up -d; exec $SHELL'" >> "$DESKTOP_FILE"
-echo "Name=Project Setup" >> "$DESKTOP_FILE"
-echo "Comment=Launch the project setup in a terminal" >> "$DESKTOP_FILE"
+echo "Exec=sh $RUN_SCRIPT" >> "$DESKTOP_FILE"
+echo "Name=GNUKhata" >> "$DESKTOP_FILE"
+echo "Comment=Launch the GNUKhata in a terminal" >> "$DESKTOP_FILE"
 chmod +x "$DESKTOP_FILE"
 
 echo "Desktop launcher created at $DESKTOP_FILE"
@@ -88,9 +88,9 @@ UPDATE_FILE="$DESKTOP_DIR/project-update.desktop"
 echo "[Desktop Entry]" > "$UPDATE_FILE"
 echo "Type=Application" >> "$UPDATE_FILE"
 echo "Terminal=true" >> "$UPDATE_FILE"
-echo "Exec=sh -c 'cd $PROJECT_DIR && docker compose down && curl -fsSL $COMPOSE_URL -o $COMPOSE_FILE && docker compose up -d; exec $SHELL'" >> "$UPDATE_FILE"
-echo "Name=Project Update" >> "$UPDATE_FILE"
-echo "Comment=Update and restart the project" >> "$UPDATE_FILE"
+echo "Exec=sh -c 'curl -fsSL \"$COMPOSE_URL\" -o \"$COMPOSE_FILE\"'" >> "$UPDATE_FILE"
+echo "Name=GNUKhata Update" >> "$UPDATE_FILE"
+echo "Comment=Update and restart GNUKhata" >> "$UPDATE_FILE"
 chmod +x "$UPDATE_FILE"
 
 echo "Update launcher created at $UPDATE_FILE"
