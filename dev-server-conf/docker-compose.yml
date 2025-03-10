@@ -15,22 +15,35 @@ services:
       - "${DB_HOST_PORT:-5432}:5432"
     volumes:
       - gkdb:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "sh -c 'pg_isready -U ${GKCORE_DB_USER:-gkadmin} -d ${GKCORE_DB_NAME:-gkdata}'"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
 
   # REST API Server
   gkcore:
     image: digitalfreedom/gkcore:devel
     restart: "always"
-    env_file:
-      - path: .env
-        required: false
     environment:
       - GKCORE_DB_HOST=db
       - GKCORE_DB_PORT=5432
-      - ENVIRONMENT=development
+      - ENVIRONMENT=${ENVIRONMENT:-development}
     ports:
       - "6543:6543" #gkcore
     depends_on:
-      - db
+      db:
+        condition: service_healthy
+
+  # GNUKhata progressive web app
+  gkapp:
+    image: digitalfreedom/gkapp:devel
+    restart: "always"
+    ports:
+      - "2020:80"
+    depends_on:
+      - gkcore
+    profiles: [frontend]
 
   # gnukhata v7
   gkwebapp:
@@ -40,6 +53,7 @@ services:
       - "6544:6544"
     volumes:
       - gkdb_old:/var/lib/postgresql
+    profiles: [frontend-old]
 
 volumes:
   gkdb:
