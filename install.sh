@@ -6,7 +6,7 @@ set -u  # Treat unset variables as an error
 
 # Ensure desktop file directory exists
 COMPOSE_URL="https://gitlab.com/gnukhata/build/-/raw/master/docker-compose.yml"
-DESKTOP_DIR="$HOME/.local/share/applications"
+APPLICATION_DIR="$HOME/.local/share/applications"
 PROJECT_DIR="$HOME/.local/share/gnukhata"
 CONF_DIR="$HOME/.config/gnukhata"
 CONF_FILE=${1:-}
@@ -26,9 +26,17 @@ if ! command -v docker-compose >/dev/null 2>&1; then
     exit 1
 fi
 
-# Create project directory
-mkdir -p "$PROJECT_DIR"
+# Create application directory
+if [ ! -d "$APPLICATION_DIR" ]; then
+    mkdir -p "$APPLICATION_DIR"
+fi
 
+# Create project directory
+if [ ! -d "$PROJECT_DIR" ]; then
+    mkdir -p "$PROJECT_DIR"
+fi
+
+# Copy conf file
 if [ -f "$CONF_FILE" ]; then
     mkdir -p "$CONF_DIR"
     cp "$CONF_FILE" "$CONF_DIR/env"
