@@ -79,18 +79,9 @@ echo "Terminal=true" >> "$DESKTOP_FILE"
 echo "Exec=sh $RUN_SCRIPT" >> "$DESKTOP_FILE"
 echo "Name=GNUKhata" >> "$DESKTOP_FILE"
 echo "Comment=Launch the GNUKhata in a terminal" >> "$DESKTOP_FILE"
+echo "[Desktop Action update-gnukhata]" >> "$DESKTOP_FILE"
+echo "Name=Update" >> "$DESKTOP_FILE"
+echo "Exec=sh -c 'curl -fsSL \"$COMPOSE_URL\" -o \"$COMPOSE_FILE\"'" >> "$DESKTOP_FILE"
 chmod +x "$DESKTOP_FILE"
 
 echo "Desktop launcher created at $DESKTOP_FILE"
-
-# Create a desktop entry for updating the project
-UPDATE_FILE="$DESKTOP_DIR/project-update.desktop"
-echo "[Desktop Entry]" > "$UPDATE_FILE"
-echo "Type=Application" >> "$UPDATE_FILE"
-echo "Terminal=true" >> "$UPDATE_FILE"
-echo "Exec=sh -c 'curl -fsSL \"$COMPOSE_URL\" -o \"$COMPOSE_FILE\"'" >> "$UPDATE_FILE"
-echo "Name=GNUKhata Update" >> "$UPDATE_FILE"
-echo "Comment=Update and restart GNUKhata" >> "$UPDATE_FILE"
-chmod +x "$UPDATE_FILE"
-
-echo "Update launcher created at $UPDATE_FILE"
