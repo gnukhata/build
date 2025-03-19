@@ -10,6 +10,7 @@ APPLICATION_DIR="$HOME/.local/share/applications"
 PROJECT_DIR="$HOME/.local/share/gnukhata"
 CONF_DIR="$HOME/.config/gnukhata"
 CONF_FILE=${1:-}
+DOCKER_COMPOSE_COMMAND=""
 
 # To cleanup on error
 cleanup() {
@@ -21,8 +22,14 @@ cleanup() {
 trap cleanup EXIT
 
 # Check if docker compose is available
-if ! command -v docker-compose >/dev/null 2>&1; then
-    echo "Error: docker-compose is not installed or not in PATH. Please install docker-compose before running this script."
+if [ -x "$(command -v docker-compose)" ]; then
+    echo "SUCCESS: docker-compose is installed."
+    DOCKER_COMPOSE_COMMAND="docker-compose"
+elif $(docker compose &>/dev/null) && [ $? -eq 0 ]; then
+    echo "SUCCESS: docker compose is installed."
+    DOCKER_COMPOSE_COMMAND="docker compose"
+else
+    echo "ERROR: Docker Compose is not installed or not in PATH. Please install Docker Compose before running this script."
     exit 1
 fi
 
@@ -66,9 +73,9 @@ RUN_SCRIPT="$PROJECT_DIR/run_docker_compose.sh"
 echo '#!/bin/sh' > "$RUN_SCRIPT"
 echo "cd $PROJECT_DIR" >> "$RUN_SCRIPT"
 echo "if [ -f \"$CONF_DIR/env\" ]; then" >> "$RUN_SCRIPT"
-echo "  docker-compose --profile frontend --env-file \"$CONF_DIR/env\" up -d" >> "$RUN_SCRIPT"
+echo "  $DOCKER_COMPOSE_COMMAND --profile frontend --env-file \"$CONF_DIR/env\" up -d" >> "$RUN_SCRIPT"
 echo "else" >> "$RUN_SCRIPT"
-echo "  docker-compose --profile frontend up -d" >> "$RUN_SCRIPT"
+echo "  $DOCKER_COMPOSE_COMMAND --profile frontend up -d" >> "$RUN_SCRIPT"
 echo "fi" >> "$RUN_SCRIPT"
 chmod +x "$RUN_SCRIPT"
 
@@ -92,7 +99,7 @@ echo "Name=Update" >> "$DESKTOP_FILE"
 echo "Exec=sh -c 'curl -fsSL \"$COMPOSE_URL\" -o \"$COMPOSE_FILE\"'" >> "$DESKTOP_FILE"
 echo "[Desktop Action close-gnukhata]" >> "$DESKTOP_FILE"
 echo "Name=Close" >> "$DESKTOP_FILE"
-echo "Exec=sh -c 'cd \"$PROJECT_DIR\" && docker-compose down --profile frontend'" >> "$DESKTOP_FILE"
+echo "Exec=sh -c 'cd \"$PROJECT_DIR\" && $DOCKER_COMPOSE_COMMAND down --profile frontend'" >> "$DESKTOP_FILE"
 chmod +x "$DESKTOP_FILE"
 
 echo "Desktop launcher created at $DESKTOP_FILE"
