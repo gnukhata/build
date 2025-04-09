@@ -44,9 +44,11 @@ if [ ! -d "$PROJECT_DIR" ]; then
 fi
 
 # Copy conf file
+mkdir -p "$CONF_DIR"
 if [ -f "$CONF_FILE" ]; then
-    mkdir -p "$CONF_DIR"
     cp "$CONF_FILE" "$CONF_DIR/env"
+else
+    echo "VITE_GKCORE_URL='http://localhost:6543'" >> "$CONF_DIR/env"
 fi
 
 # Download docker-compose file with retry mechanism
